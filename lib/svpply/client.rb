@@ -1,6 +1,7 @@
 require 'faraday_middleware'
 require 'json'
 require 'svpply/products'
+require 'svpply/search'
 
 module Svpply
   CONNECTION_OPTIONS = {
@@ -12,6 +13,7 @@ module Svpply
 
   class Client
     include Svpply::Products
+    include Svpply::Search
 
     attr_reader :access_token, :client_id
 
@@ -38,7 +40,7 @@ module Svpply
 
     def request(action, endpoint, params)
       res = connection.send(action, endpoint, params).env
-
+      print res
       if res[:body] && res[:body] != ''
         JSON.parse res[:body]
       else
@@ -48,7 +50,6 @@ module Svpply
 
     def connection
       @connection ||= Faraday.new('https://api.svpply.com/v1', CONNECTION_OPTIONS) do |conn|
-        conn.request :url_encoded
         conn.adapter Faraday.default_adapter
       end
     end
