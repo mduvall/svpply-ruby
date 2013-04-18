@@ -7,10 +7,17 @@ module Svpply
     def configure(opts)
       @access_token = opts[:access_token]
       @client_id = opts[:client_id]
+      @client_secret = opts[:client_secret]
+      @code = opts[:code]
     end
 
     def client
-      @client = Svpply::Client.new({access_token: @access_token, client_id: @client_id})
+      @client = Svpply::Client.new({
+        access_token: @access_token,
+        client_id: @client_id,
+        client_secret: @client_secret,
+        code: @code
+      })
       @client
     end
 
